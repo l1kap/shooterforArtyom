@@ -86,6 +86,19 @@ class MiniBoss(GameSprite):
             elif self.rect.x <= 100:
                 self.speed = -1 * self.speed
 
+class Killer(GameSprite):
+    def update(self):
+        if self.rect.y < Starship.rect.y:
+            self.rect.y += self.sk
+        elif self.rect.y > Starship.rect.y:
+            self.rect.y -= self.sk
+        if self.rect.x > Starship.rect.x:
+            self.rect.x -= self.speed
+        if self.rect.x < Starship.rect.x:
+            self.rect.x += self.speed
+
+
+
 
 class Bullet(GameSprite):
     def update(self):
@@ -118,6 +131,7 @@ puli = 0
 
 #Персонажи
 Starship = Player('rocket.png', 350, 420, 80, 80, 5, 0 )
+Killer = Killer('rocket.png', 350, 20, 60, 60, 5, 1 )
 monsters = sprite.Group()
 for i in range(1,6):
     monster = Enemy('ufo.png', randint(5, win_width - 80), 20, randint(60, 80),randint(30, 50), 1, 0)
@@ -165,12 +179,14 @@ while run:
         window.blit(background,(0, 0))
         Starship.update()
         minibosses.update()
+        Killer.update()
         monsters.update()
         bullets.update()
         asteroids.update()
         stars.update()
         
         Starship.reset()
+        Killer.reset()
         minibosses.draw(window)
         monsters.draw(window)
         bullets.draw(window)
